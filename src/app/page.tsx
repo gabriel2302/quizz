@@ -7,14 +7,31 @@ import { useEffect, useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
+type QuizzAttributes = {
+  title: string;
+  description: string;
+  cover: {
+    data: {
+      attributes: {
+        alternativeText: string;
+        url: string
+      }
+    }
+  }
+}
+type Quizz = {
+  id: number;
+  attributes: QuizzAttributes
+}
+
 export default function Home() {
-  const [data, setData] = useState(null)
+  const [data, setData] = useState<Quizz[]>()
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://gabzel.com.br:1337/api/quizzes?populate=*')
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/quizzes?populate[0]=cover`)
       const data = await response.json()
-      setData(data)
+      setData(data.data)
     }
     fetchData()
   }, []);
@@ -27,8 +44,8 @@ export default function Home() {
           Get started by editing&nbsp;
           <code className={styles.code}>app/page.tsx</code>
         </p>
-        <h1>{data && data.data[0].attributes.description}</h1>
-        <img src={data && data.data[0].attributes.cover.data.attributes.url || '#'}></img>
+        <h1>{data && data[0].attributes.description}</h1>
+        <img src={data && data[0].attributes.cover.data.attributes.url || '#'}></img>
         <div>
           <a
             href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
