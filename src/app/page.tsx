@@ -1,10 +1,25 @@
+"use client";
+
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from './page.module.css'
+import { useEffect, useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('http://gabzel.com.br:1337/api/quizzes?populate=*')
+      const data = await response.json()
+      setData(data)
+    }
+    fetchData()
+  }, []);
+
+  console.log(data)
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -12,6 +27,8 @@ export default function Home() {
           Get started by editing&nbsp;
           <code className={styles.code}>app/page.tsx</code>
         </p>
+        <h1>{data && data.data[0].attributes.description}</h1>
+        <img src={data && data.data[0].attributes.cover.data.attributes.url || '#'}></img>
         <div>
           <a
             href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
