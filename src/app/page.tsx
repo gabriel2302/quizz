@@ -29,7 +29,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/quizzes?populate[0]=cover`)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quizzes?populate[0]=cover`)
       const data = await response.json()
       setData(data.data)
     }
