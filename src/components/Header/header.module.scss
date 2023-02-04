@@ -1,0 +1,23 @@
+.header {
+  background-color: var(--color-primary);
+  height: 8rem;
+  display: flex;
+  align-items: center;
+  padding: .8rem;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.searchInput {
+  padding: .8rem;
+  border: 5px;
+  font-family: 'Inter';
+}
+
+.logo {
+  font-size: 32px;
+  color: var(--color-secondary-dark)
+}

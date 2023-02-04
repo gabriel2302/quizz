@@ -1,0 +1,17 @@
+.quizItem {
+  box-shadow: var(--shadow-light);
+  padding: 0.8rem
+}
+
+.image {
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: 150px !important;
+  border-radius: 5px;
+}
+
+.description {
+  font-size: 1.6rem;
+  font-family: 'Open sans';
+}
