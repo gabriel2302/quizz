@@ -11,7 +11,7 @@ export default function QuizList(list: Quizz[]) {
     <div className={styles.quizList}>
       <h1>Lista de Quiz</h1>
       {quizIdList.map(item => (
-        <div id={item} className={styles.quizItem}>
+        <div id={item} key={item} className={styles.quizItem}>
           <QuizItem {...list[Number(item)]}/>
         </div>
       ))}
