@@ -28,6 +28,11 @@ type QuizPageProps = {
             id: number;
             attributes: {
               description: string;
+              correctAnswer: {
+                data: {
+                  id: number;
+                }
+              }
               cover: {
                 data: {
                   id: number;
@@ -119,7 +124,7 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
 }
 
 const getQuiz = async (quizId: string) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/${quizId}?populate[0]=cover&populate[1]=questions&populate[2]=questions.cover&populate[3]=questions.answers`)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/${quizId}?populate[0]=cover&populate[1]=questions&populate[2]=questions.cover&populate[3]=questions.answers&populate[4]=questions.correctAnswer`)
   const data = await response.json()
   return data.data
 }
