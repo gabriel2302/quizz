@@ -71,7 +71,11 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
   const onOptionChange = (id: number) => {
     setOption(id)
   }
- 
+  
+  // Todo = Barra com numero de questões e cor verde para acerto e vermelho para erro
+  // Passar para frente
+  // Navegar entre as opções
+
   return (
     <div>
       <h1>{quizInfo.attributes.title}</h1>

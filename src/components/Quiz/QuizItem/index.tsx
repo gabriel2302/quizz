@@ -5,6 +5,7 @@ import { Quizz } from "@/app/page"
 import styles from './QuizItem.module.scss'
 
 export default function QuizItem({attributes, id}: Quizz) {
+  // Todo = Criar barra de tags dentro do quiz
   return (
     <div className={styles.quizItem}>
       <Link href={`quiz/${id}`}>
