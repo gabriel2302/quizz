@@ -3,7 +3,7 @@
   height: 8rem;
   display: flex;
   align-items: center;
-  padding: .8rem;
+  padding: .8rem 1.6rem;
   justify-content: space-between;
   position: fixed;
   top: 0;
@@ -14,7 +14,14 @@
 .searchInput {
   padding: .8rem;
   border: 5px;
-  font-family: 'Inter';
+  font-family: 'Open sans';
+  border-radius: 5px;
+  color: var(--color-secondary);
+
+  &::placeholder {
+    font-family: 'Open sans';
+    color: var(--color-secondary);
+  }
 }
 
 .logo {

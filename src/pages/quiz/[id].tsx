@@ -1,4 +1,5 @@
-import { BsArrowRight } from "react-icons/bs";
+import { BsArrowRight, BsFillPlayFill, BsFillReplyFill } from "react-icons/bs";
+import { useRouter } from 'next/router';
 
 import { GetServerSideProps } from 'next'
 import Image from 'next/image'
@@ -103,9 +104,26 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [indexQuestion, setIndexQuestion] = useState(0)
   const questions = quizInfo.attributes.questions
-  const lastQuestionId = questions.data[questions.data.length -1].id;
+  const lastQuestionId = questions.data[questions.data.length - 1].id;
   const [answhers, setAnswhers] = useState<Question[]>([])
   const [option, setOption] = useState(0);
+
+
+  const router = useRouter()
+
+  function choiceQuestionMarkerColor(questionId: number, answherId: number) {
+    const question = questions.data.find(question => question.id === questionId)
+    if (!question) {
+      return 'Neutral'
+    }
+    if (question.attributes.correctAnswer.data.id === answherId) {
+      return 'Correct'
+    } else if (question.attributes.correctAnswer.data.id !== answherId) {
+      return 'Incorrect'
+    }
+    return 'Neutral'
+
+  }
 
   function InitializeQuiz() {
     setQuizStarted(true);
@@ -116,28 +134,29 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
     setOption(id)
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     setCurrentQuestion(quizInfo.attributes.questions.data[indexQuestion].id)
   }, [indexQuestion])
 
   const advanceQuestion = () => {
     console.log(option)
     if (option !== 0) {
-      setAnswhers([...answhers, { question: currentQuestion, anshwer: option }])
-      setIndexQuestion(indexQuestion+1)
-      console.log('index', indexQuestion, quizInfo.attributes.questions.data[indexQuestion].id)
-      
-      console.log(answhers, currentQuestion)
+
+      if (lastQuestionId === currentQuestion) {
+        setAnswhers([...answhers, { question: currentQuestion, anshwer: option }])
+      } else {
+        setAnswhers([...answhers, { question: currentQuestion, anshwer: option }])
+        setIndexQuestion(indexQuestion + 1)
+      }
     }
   }
 
   // Todo = Barra com numero de questões e cor verde para acerto e vermelho para erro
   // Passar para frente
   // Navegar entre as opções
-  function Quizz(question: QuizQuestion, currentQuestion: number) {
-    //console.log(currentQuestion)
+  function Quizz(question: QuizQuestion, active: boolean) {
     return (
-      <div key={question.id} className={question.id === currentQuestion ? styles.activeQuestion : styles.disableQuestion}>
+      <div key={question.id} className={active ? styles.activeQuestion : styles.disableQuestion}>
         <Image
           className={`${styles.image} `}
           layout='fill'
@@ -152,8 +171,9 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
             <label htmlFor="anshwer">{answher.attributes.description}</label>
           </div>
         ))}
-        <button className="" type="button" onClick={advanceQuestion}>
-          <BsArrowRight size={24} color="#3f4e6e" />
+
+        <button style={{ margin: 0 }} className={`${styles.button} ${styles.buttonOnlyIcon} ${styles.right}`} type="button" onClick={advanceQuestion}>
+          <BsArrowRight size={24} color="#FFF" />
         </button>
       </div>
     )
@@ -182,12 +202,26 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
               src={quizInfo.attributes.cover.data.attributes.url}
             />
             <h2>{quizInfo.attributes.description}</h2>
-            <button type='button' onClick={InitializeQuiz}>Iniciar Quiz</button>
+            <div className={styles.buttonBox}>
+              <button type='button' className={styles.button} onClick={() => router.back()}>Voltar <BsFillReplyFill size={24} /></button>
+              <button type='button' className={styles.button} onClick={InitializeQuiz}>Iniciar <BsFillPlayFill size={24} /></button>
+            </div>
           </div>
         ) : (
-          quizInfo.attributes.questions.data.map(question => (
-            Quizz(question, currentQuestion)
-          ))
+          <div>
+            <div className={styles.markerQuestionBox}>
+              {questions.data.map((question, index) => {
+                const anshwer = answhers.find(answher => answher.question === question.id)
+                return (
+                  <div className={`${styles.markerQuestion} ${styles.markerQuestion + '__' + choiceQuestionMarkerColor(anshwer?.question || 0, anshwer?.anshwer || 0)}`}>
+                    {index + 1}
+                  </div>
+                )
+              })}</div>
+            {quizInfo.attributes.questions.data.map(question => (
+              Quizz(question, currentQuestion === question.id)
+            ))}
+          </div>
         )}
       </div>
     </>
