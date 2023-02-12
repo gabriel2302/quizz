@@ -5,6 +5,11 @@
 
 .title {
   margin-bottom: 1.6rem;
+  font-size: 1.6rem;
+}
+
+.feedbackMessage {
+  font-size: 1.6rem;
 }
 
 .description {
@@ -60,7 +65,9 @@
   }
 
   & label:hover {
-    background-color: #dfd;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary-dark);
   }
 }
 
@@ -117,17 +124,77 @@
 .markerQuestionBox {
   display: flex;
   flex-direction: row;
+  margin: 1.6rem 0;
+  width: 100%;
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+
+.markerQuestionBox::-webkit-scrollbar {
+  width: 0px;
+}
+
+.markerQuestion:first-child {
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.markerQuestion:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .markerQuestion {
   padding: .8rem;
-
-  &__Neutral {
-    background-color: var(--color-grey-dark-3);
-  }
+  width: 3.2rem;
+  text-align: center;
+  font-size: 1.6rem;
 }
 
-.markerQuestion__Neutral {
-  background-color: var(--color-grey-dark-3);
+.Neutral {
+  background-color: var(--color-grey-light-4);
 }
 
+.Correct {
+  background-color: var(--color-secondary);
+  color: var(--text-color-light);
+}
+
+.Incorrect {
+  background-color: var(--color-red-error);
+  color: var(--text-color-light);
+}
+
+.Selected {
+  background-color: var(--color-primary);
+  color: var(--text-color-light);
+}
+
+
+.auxMXSm {
+  margin: 1.6rem 0;
+}
+
+.auxMTSm {
+  margin-top: 1.6rem;
+}
+
+.link {
+  text-decoration: none;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.link:visited {
+  color: var(--color-secondary-dark)
+}
+
+.toastContainer {
+  font-size: 1.6rem;
+}
+
+.toast {
+  color: var(--text-color-dark);
+}

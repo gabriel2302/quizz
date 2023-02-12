@@ -1,4 +1,14 @@
-import { BsArrowRight, BsFillPlayFill, BsFillReplyFill } from "react-icons/bs";
+import {
+  FiShare2,
+  FiPlay,
+  FiArrowLeft,
+  FiRotateCcw,
+  FiHome,
+  FiArrowRight
+} from "react-icons/fi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { useRouter } from 'next/router';
 
 import { GetServerSideProps } from 'next'
@@ -7,6 +17,8 @@ import { useEffect, useState } from 'react'
 import styles from './Quiz.module.scss'
 import '../../app/globals.scss'
 import Header from '@/components/Header';
+import Link from "next/link";
+import Toast from "@/components/Toast";
 
 type QuizPageProps = {
   quizInfo: {
@@ -100,7 +112,7 @@ type QuizQuestion = {
 }
 
 export default function QuizPage({ quizInfo }: QuizPageProps) {
-  const [quizStarted, setQuizStarted] = useState(false)
+  const [status, setStatus] = useState('initial')
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [indexQuestion, setIndexQuestion] = useState(0)
   const questions = quizInfo.attributes.questions
@@ -126,7 +138,9 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
   }
 
   function InitializeQuiz() {
-    setQuizStarted(true);
+    setStatus('started');
+    const quiz = document.getElementById('quiz');
+    window.scroll(0, quiz?.offsetTop || 0)
     setCurrentQuestion(quizInfo.attributes.questions.data[indexQuestion].id)
   }
 
@@ -135,25 +149,68 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
   }
 
   useEffect(() => {
-    setCurrentQuestion(quizInfo.attributes.questions.data[indexQuestion].id)
+    if (lastQuestionId === currentQuestion) {
+      setCurrentQuestion(999)
+    } else {
+      setCurrentQuestion(quizInfo.attributes.questions.data[indexQuestion].id)
+    }
+    
   }, [indexQuestion])
 
   const advanceQuestion = () => {
-    console.log(option)
     if (option !== 0) {
 
       if (lastQuestionId === currentQuestion) {
         setAnswhers([...answhers, { question: currentQuestion, anshwer: option }])
+        setOption(0)
+        setStatus('finished')
+        setCurrentQuestion(999)
+        saveInteraction()
       } else {
         setAnswhers([...answhers, { question: currentQuestion, anshwer: option }])
+        setOption(0)
         setIndexQuestion(indexQuestion + 1)
       }
+      document.getElementById('scroll')?.scroll(indexQuestion * 10, 0)
     }
   }
 
-  // Todo = Barra com numero de questões e cor verde para acerto e vermelho para erro
-  // Passar para frente
-  // Navegar entre as opções
+  const remakeQuiz = () => {
+    setStatus('initial')
+    setCurrentQuestion(0)
+    setIndexQuestion(0)
+    setAnswhers([])
+    setOption(0)
+  }
+
+  const copyToClipBoard = () => {
+    console.log('router', router)
+    if (typeof (navigator.clipboard) == 'undefined') {
+      var text = document.createElement('textarea')
+      text.value = `${process.env.NEXT_PUBLIC_APP_URL}${router.asPath}`
+      text.style.position = 'fixed'
+      document.body.appendChild(text)
+      text.focus();
+      text.select();
+
+      document.execCommand('copy');
+      document.body.removeChild(text);
+      toast('Copiado para área de transferência', {
+        position: 'bottom-center',
+        className: `${styles.toast} progress`,
+        
+      })
+    } else {
+      navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_APP_URL}${router.asPath}`).then(() => {
+        // Invocar toast
+        <Toast message="Copiado para área de transferência" type="success"/>
+      }, () => {
+        alert('Erro ao copiar url')
+      })
+    }
+
+  }
+
   function Quizz(question: QuizQuestion, active: boolean) {
     return (
       <div key={question.id} className={active ? styles.activeQuestion : styles.disableQuestion}>
@@ -161,7 +218,7 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
           className={`${styles.image} `}
           layout='fill'
           objectFit='cover'
-          alt={question.attributes.cover.data.attributes.alternativeText}
+          alt={question.attributes.cover.data.attributes.alternativeText || 'Sem texto alternativo ):'}
           src={question.attributes.cover.data.attributes.url}
         />
         <h2 className={styles.description}>{question.attributes.description}</h2>
@@ -173,19 +230,103 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
         ))}
 
         <button style={{ margin: 0 }} className={`${styles.button} ${styles.buttonOnlyIcon} ${styles.right}`} type="button" onClick={advanceQuestion}>
-          <BsArrowRight size={24} color="#FFF" />
+          <FiArrowRight size={24} color="#FFF" />
         </button>
       </div>
     )
   }
+
+  type Cover = {
+    data: {
+      attributes: {
+        alternativeText: string
+        url: string
+      }
+    }
+  }
+  function FinishedQuiz(cover: Cover, message: string, quizUrl: string) {
+    return (
+      <>
+        <Image
+          className={styles.image}
+          layout='fill'
+          objectFit='cover'
+          alt={cover.data.attributes.alternativeText}
+          src={cover.data.attributes.url}
+        />
+        <div>
+          <h2 className={`${styles.title} ${styles.auxMTSm}`}>Quiz Finalizado!</h2>
+          <span className={styles.feedbackMessage}>
+            {message}
+          </span>
+
+          <div className={`${styles.buttonBox} ${styles.auxMXSm}`}>
+            <button type="button" className={styles.button} onClick={remakeQuiz}>
+              Refazer
+              <FiRotateCcw size={24} />
+            </button>
+
+            <button type="button" className={styles.button} onClick={copyToClipBoard}>
+              Compartilhar
+              <FiShare2 size={24} />
+            </button>
+          </div>
+
+          <Link href="/"  className={styles.link}>
+            <span style={{ fontSize: '1.6rem', fontFamily: 'Open sans'}}>Ir para página Inicial</span>
+            <FiHome size={24} style={{ marginLeft: '.8rem'}}/>
+          </Link>
+
+          <ToastContainer autoClose={1500} className={styles.toastContainer} progressStyle={{ backgroundColor: 'red', color: 'red'}} />
+        </div>
+      </>
+    )
+  }
+  function getTotalCorrectQuestions() {
+    let totalCorrectAnshwers = 0
+    answhers.forEach(anshwer => {
+      const question = questions.data.find(question => question.id === anshwer.question)
+      if (question?.attributes.correctAnswer.data.id === anshwer.anshwer) {
+        totalCorrectAnshwers += 1;
+      }
+    })
+
+    return totalCorrectAnshwers
+  }
+  function getFeedbackQuiz() {
+    let totalCorrectAnshwers = getTotalCorrectQuestions()
+    let percentageAccurance = 0
+
+    if (totalCorrectAnshwers !== 0) {
+      percentageAccurance = (totalCorrectAnshwers * 100) / questions.data.length
+    }
+
+    if (percentageAccurance >= 70) {
+      return quizInfo.attributes.fullKnowledge.replace('${X}', String(totalCorrectAnshwers))
+    }
+    if (percentageAccurance >= 30) {
+      return quizInfo.attributes.mediumKnowledge.replace('${X}', String(totalCorrectAnshwers))
+    }
+    return quizInfo.attributes.littleKnowledge.replace('${X}', String(totalCorrectAnshwers))
+  }
+
+  function saveInteraction() {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/interactions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        { data: {quiz: quizInfo.id, correctQuestions: getTotalCorrectQuestions(), totalQuestions: questions.data.length }}
+      )
+    })
+  }
   return (
     <>
       <Header />
-      <div className={styles.quiz}>
+      <div className={styles.quiz} id="quiz">
 
         <h1 className={styles.title}>{quizInfo.attributes.title}</h1>
 
-        {!quizStarted ? (
+        {status === 'initial' ? (
           <div>
             <div className={styles.tags}>
               {quizInfo.attributes.tags.data.map(tag => {
@@ -203,24 +344,35 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
             />
             <h2>{quizInfo.attributes.description}</h2>
             <div className={styles.buttonBox}>
-              <button type='button' className={styles.button} onClick={() => router.back()}>Voltar <BsFillReplyFill size={24} /></button>
-              <button type='button' className={styles.button} onClick={InitializeQuiz}>Iniciar <BsFillPlayFill size={24} /></button>
+              <button type='button' className={styles.button} onClick={() => router.back()}>Voltar <FiArrowLeft size={24} /></button>
+              <button type='button' className={styles.button} onClick={InitializeQuiz}>Iniciar <FiPlay size={24} /></button>
             </div>
           </div>
         ) : (
           <div>
-            <div className={styles.markerQuestionBox}>
+            <div className={styles.markerQuestionBox} id="scroll">
               {questions.data.map((question, index) => {
-                const anshwer = answhers.find(answher => answher.question === question.id)
+                const anshwer = answhers.find(answher => answher.question === question.id);
                 return (
-                  <div className={`${styles.markerQuestion} ${styles.markerQuestion + '__' + choiceQuestionMarkerColor(anshwer?.question || 0, anshwer?.anshwer || 0)}`}>
+                  <div key={question.id} id={String(question.id)}
+                    className={
+                      `${styles.markerQuestion} 
+                    ${styles[choiceQuestionMarkerColor(anshwer?.question || 0, anshwer?.anshwer || 0)]}
+                    ${currentQuestion === question.id && styles.Selected}
+                    `}>
                     {index + 1}
                   </div>
                 )
-              })}</div>
-            {quizInfo.attributes.questions.data.map(question => (
-              Quizz(question, currentQuestion === question.id)
-            ))}
+              })}
+            </div>
+
+            {status === 'started' ? (
+              quizInfo.attributes.questions.data.map(question => (
+                Quizz(question, currentQuestion === question.id)
+              ))
+            ) : (
+              FinishedQuiz(quizInfo.attributes.cover, getFeedbackQuiz(), `localhost:3000/quiz/5`)
+            )}
           </div>
         )}
       </div>
@@ -244,7 +396,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const quizInfo = await getQuiz(id[0])
-  console.log('quizInfo', quizInfo)
+
   return {
     props: {
       quizInfo

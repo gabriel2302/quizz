@@ -11,6 +11,8 @@
 
   --color-tertiary: #e6d661;
 
+  --color-red-error: #AD0E0B;
+
   --text-color-dark: #080206;
   --text-color-light: #ECFFFF;
 
@@ -28,6 +30,8 @@
   --shadow-light: 0 2rem 5rem rgba(0, 0, 0, .06);
 
   --line: 1px solid var(--color-grey-light-2);
+
+  --toastify-color-progress-light: #88aaee
 }
 
 $bp-largest: 75em; //1200px/16px
@@ -64,4 +68,8 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   background-color: var(--color-white);
+}
+
+.progress {
+  background-color: #AD0E0B;
 }
