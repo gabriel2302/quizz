@@ -6,12 +6,13 @@ import {
   FiHome,
   FiArrowRight
 } from "react-icons/fi";
+import { getPlaiceholder } from "plaiceholder";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useRouter } from 'next/router';
 
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styles from './Quiz.module.scss'
@@ -35,6 +36,7 @@ type QuizPageProps = {
           attributes: {
             alternativeText: string;
             url: string;
+            base64: string
           }
         }
       },
@@ -54,7 +56,8 @@ type QuizPageProps = {
                   id: number;
                   attributes: {
                     alternativeText: string;
-                    url: string
+                    url: string;
+                    base64: string;
                   }
                 }
               },
@@ -94,7 +97,7 @@ type QuizQuestion = {
   attributes: {
     cover: {
       data: {
-        attributes: { alternativeText: string; url: string }
+        attributes: { alternativeText: string; url: string; base64: string }
       }
     }
     description: string
@@ -119,7 +122,6 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
   const lastQuestionId = questions.data[questions.data.length - 1].id;
   const [answhers, setAnswhers] = useState<Question[]>([])
   const [option, setOption] = useState(0);
-
 
   const router = useRouter()
 
@@ -184,7 +186,6 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
   }
 
   const copyToClipBoard = () => {
-    console.log('router', router)
     if (typeof (navigator.clipboard) == 'undefined') {
       var text = document.createElement('textarea')
       text.value = `${process.env.NEXT_PUBLIC_APP_URL}${router.asPath}`
@@ -216,10 +217,15 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
       <div key={question.id} className={active ? styles.activeQuestion : styles.disableQuestion}>
         <Image
           className={`${styles.image} `}
-          layout='fill'
-          objectFit='cover'
+          fill
+          style={{ objectFit: 'cover'}}
+          placeholder="blur"
+          blurDataURL={question.attributes.cover.data.attributes.base64}
           alt={question.attributes.cover.data.attributes.alternativeText || 'Sem texto alternativo ):'}
           src={question.attributes.cover.data.attributes.url}
+          sizes="(min-width: 60em) 24vw,
+                    (min-width: 28em) 45vw,
+                    100vw"
         />
         <h2 className={styles.description}>{question.attributes.description}</h2>
         {question.attributes.answers.data.map(answher => (
@@ -240,7 +246,8 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
     data: {
       attributes: {
         alternativeText: string
-        url: string
+        url: string;
+        base64: string
       }
     }
   }
@@ -249,8 +256,10 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
       <>
         <Image
           className={styles.image}
-          layout='fill'
-          objectFit='cover'
+          fill
+          style={{ objectFit: 'cover'}}
+          placeholder="blur"
+          blurDataURL={cover.data.attributes.base64}
           alt={cover.data.attributes.alternativeText}
           src={cover.data.attributes.url}
         />
@@ -335,13 +344,19 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
                 )
               })}
             </div>
+            <div style={{position: 'relative'}}>
             <Image
               className={styles.image}
-              layout='fill'
-              objectFit='cover'
+              fill
+              priority
+              style={{ objectFit: 'cover'}}
               alt={quizInfo.attributes.cover.data.attributes.alternativeText}
               src={quizInfo.attributes.cover.data.attributes.url}
+              sizes="(min-width: 60em) 24vw,
+                    (min-width: 28em) 45vw,
+                    100vw"
             />
+            </div>
             <h2>{quizInfo.attributes.description}</h2>
             <div className={styles.buttonBox}>
               <button type='button' className={styles.button} onClick={() => router.back()}>Voltar <FiArrowLeft size={24} /></button>
@@ -386,7 +401,7 @@ const getQuiz = async (quizId: string) => {
   return data.data
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps  = async (context) => {
   const id = context.params?.id;
 
   if (!id) {
@@ -397,9 +412,29 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const quizInfo = await getQuiz(id[0])
 
+  await Promise.all(quizInfo.attributes.questions.data.map(async (data: any, index: any) => {
+    const { base64, img } = await getPlaiceholder(data.attributes.cover.data.attributes.url)
+    data.attributes.cover.data.attributes.base64 = base64
+    return {
+      ...img,
+      base64: base64
+    }
+  }))
+
+  const {base64}= await getPlaiceholder(quizInfo.attributes.cover.data.attributes.url)
+  quizInfo.attributes.cover.data.attributes.base64 = base64
+
   return {
     props: {
       quizInfo
     }
+  }
+}
+
+export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
+
+  return {
+      paths: [], //indicates that no page needs be created at build time
+      fallback: 'blocking' //indicates the type of fallback
   }
 }

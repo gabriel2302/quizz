@@ -11,8 +11,8 @@ export default function QuizItem({attributes, id}: Quizz) {
       <Link href={`quiz/${id}`}>
         <Image
           className={styles.image} 
-          layout='fill'
-          objectFit='cover'
+          fill
+          style={{ objectFit: 'cover'}}
           alt={attributes.cover.data.attributes.alternativeText} 
           src={attributes.cover.data.attributes.url}
         />
