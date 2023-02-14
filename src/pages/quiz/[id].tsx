@@ -1,3 +1,4 @@
+import 'react-toastify/dist/ReactToastify.css';
 import {
   FiShare2,
   FiPlay,
@@ -8,11 +9,11 @@ import {
 } from "react-icons/fi";
 import { getPlaiceholder } from "plaiceholder";
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 import { useRouter } from 'next/router';
 
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styles from './Quiz.module.scss'
@@ -199,12 +200,15 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
       toast('Copiado para área de transferência', {
         position: 'bottom-center',
         className: `${styles.toast} progress`,
-        
       })
     } else {
       navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_APP_URL}${router.asPath}`).then(() => {
         // Invocar toast
-        <Toast message="Copiado para área de transferência" type="success"/>
+        //<Toast message="Copiado para área de transferência" type="success"/>
+        toast('Copiado para área de transferência', {
+          position: 'bottom-center',
+          className: `${styles.toast} progress`,
+        })
       }, () => {
         alert('Erro ao copiar url')
       })
@@ -286,7 +290,7 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
             <FiHome size={24} style={{ marginLeft: '.8rem'}}/>
           </Link>
 
-          <ToastContainer autoClose={1500} className={styles.toastContainer} progressStyle={{ backgroundColor: 'red', color: 'red'}} />
+          <ToastContainer autoClose={1500} className={styles.toastContainer} progressStyle={{ backgroundColor: '#49e673', color: '#49e673'}} />
         </div>
       </>
     )

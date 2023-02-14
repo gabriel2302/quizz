@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import QuizList from '../components/Quiz/QuizList'
 
+
 export type QuizzAttributes = {
   title: string;
   description: string;
