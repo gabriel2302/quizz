@@ -1,10 +1,10 @@
 "use client";
 
 import styles from './page.module.css'
-import { useEffect, useState } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 
-import Header from '../components/Header'
 import QuizList from '../components/Quiz/QuizList'
+import { ClipLoader, PacmanLoader } from 'react-spinners';
 
 
 export type QuizzAttributes = {
@@ -28,23 +28,45 @@ export type Quizz = {
   attributes: QuizzAttributes
 }
 
+const override: CSSProperties = {
+  left: '50%',
+  top: '50%',
+  transform: 'translate(-50%, -50%)',
+  position: 'absolute'
+};
+
 export default function Home() {
   const [data, setData] = useState<Quizz[]>()
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      //setIsLoading(true)
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quizzes?populate[0]=cover`)
       const data = await response.json()
-      console.log(data.data)
       setData(data.data)
+      setIsLoading(false)
     }
     fetchData()
   }, []);
 
   return (
-    <main className={styles.main}>
-      <Header />
-      {data && (<QuizList {...data}/>)}
+    <main className={styles.main} style={{position: 'relative'}}>
+      {!isLoading ? (
+        data && (<QuizList {...data} />)
+      ) : (
+        <div className="sweet-loading">
+          <PacmanLoader
+            color='#88aaee'
+            loading={isLoading}
+            cssOverride={override}
+            size={32}
+            aria-label="Carregando lista de Quiz"
+            data-testid="loader"
+          />
+        </div>
+      )}
+
     </main>
   )
 }

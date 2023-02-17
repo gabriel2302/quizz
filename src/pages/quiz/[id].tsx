@@ -116,6 +116,7 @@ type QuizQuestion = {
 }
 
 export default function QuizPage({ quizInfo }: QuizPageProps) {
+  console.log(quizInfo)
   const [status, setStatus] = useState('initial')
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [indexQuestion, setIndexQuestion] = useState(0)
@@ -203,8 +204,6 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
       })
     } else {
       navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_APP_URL}${router.asPath}`).then(() => {
-        // Invocar toast
-        //<Toast message="Copiado para área de transferência" type="success"/>
         toast('Copiado para área de transferência', {
           position: 'bottom-center',
           className: `${styles.toast} progress`,
