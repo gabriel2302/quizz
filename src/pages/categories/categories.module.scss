@@ -1,0 +1,44 @@
+.categories {
+  padding: 8rem 1.6rem; //top = altura do header
+  margin-top: 1.6rem;
+}
+
+.description {
+  font-size: 1.3rem;
+  margin-top: .8rem;
+}
+
+.tagBox {
+  padding: 1.6rem 0;
+  max-height: 20vh;
+  height: fit-content;
+  background-color:var(--color-grey-light-1);
+  border-radius: 5px;
+  margin-top: 1.6rem;
+  overflow: scroll;
+  padding-bottom: 0;
+}
+
+.quizListBox {
+  margin-top: 1.6rem;
+  background-color:var(--color-grey-light-1);
+}
+
+.tagBox::-webkit-scrollbar {
+  width: 0px;
+}
+
+.tagButton {
+  padding: 0.8rem 1.6rem;
+  font-family: 'Open Sans';
+  margin: .8rem;
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--text-color-light);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tagButton:focus {
+  background-color: var(--color-primary-dark);
+}

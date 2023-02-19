@@ -5,3 +5,8 @@
   position: relative;
   height: 100vh;
 }
+
+.quizListBox {
+  padding: 8rem 1.6rem;
+  margin-top: 1.6rem;
+}

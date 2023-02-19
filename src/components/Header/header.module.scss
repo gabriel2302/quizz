@@ -9,6 +9,13 @@
   top: 0;
   width: 100%;
   z-index: 2;
+
+  margin-bottom: 3.2rem;
+
+
+  & a {
+    text-decoration: none;
+  }
 }
 
 .searchInput {
@@ -27,4 +34,14 @@
 .logo {
   font-size: 32px;
   color: var(--color-secondary-dark)
+}
+
+.burguerIcon {
+  background: none;
+  border: none;
+  color: var(--text-color-light)
+}
+
+.selectedItem {
+  background-color: var(--color-primary-dark);
 }

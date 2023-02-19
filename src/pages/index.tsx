@@ -1,10 +1,8 @@
-"use client";
-
 import styles from './page.module.css'
 import { CSSProperties, useEffect, useState } from 'react'
 
 import QuizList from '../components/Quiz/QuizList'
-import { ClipLoader, PacmanLoader } from 'react-spinners';
+import { PacmanLoader } from 'react-spinners';
 
 
 export type QuizzAttributes = {
@@ -41,8 +39,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      //setIsLoading(true)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quizzes?populate[0]=cover`)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quizzes?populate[0]=cover`, { cache: 'force-cache'})
       const data = await response.json()
       setData(data.data)
       setIsLoading(false)
@@ -53,7 +50,7 @@ export default function Home() {
   return (
     <main className={styles.main} style={{position: 'relative'}}>
       {!isLoading ? (
-        data && (<QuizList {...data} />)
+        data && (<div className={styles.quizListBox}><QuizList {...data} /></div>)
       ) : (
         <div className="sweet-loading">
           <PacmanLoader
@@ -66,7 +63,6 @@ export default function Home() {
           />
         </div>
       )}
-
     </main>
   )
 }

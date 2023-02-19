@@ -17,10 +17,8 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styles from './Quiz.module.scss'
-import '../../app/globals.scss'
 import Header from '@/components/Header';
 import Link from "next/link";
-import Toast from "@/components/Toast";
 
 type QuizPageProps = {
   quizInfo: {

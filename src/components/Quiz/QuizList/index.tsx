@@ -1,4 +1,4 @@
-import { Quizz } from "@/app/page"
+import { Quizz } from "../../../pages/"
 import QuizItem from "../QuizItem"
 
 import styles from './QuizList.module.scss'
@@ -9,7 +9,7 @@ export default function QuizList(list: Quizz[]) {
   return (
     <>
     <div className={styles.quizList}>
-      <h1>Lista de Quiz</h1>
+      <h2 className={styles.title}>Lista de Quiz</h2>
       {quizIdList.map(item => (
         <div id={item} key={item} className={styles.quizItem}>
           <QuizItem {...list[Number(item)]}/>
