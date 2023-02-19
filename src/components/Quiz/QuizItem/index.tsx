@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Quizz } from "@/app/page"
+import { Quizz } from "../../../pages"
 
 import styles from './QuizItem.module.scss'
 
