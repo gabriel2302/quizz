@@ -40,7 +40,7 @@ export default function Header() {
                 <span>Categorias</span>
               </li>
             </Link>
-            <Link href="/" onClick={() => navigateMenu("respondidos")}>
+            <Link href="/answered" onClick={() => navigateMenu("respondidos")}>
               <li id="respondidos" className={`${isSelected === "respondidos" && styles.selectedItem}`}>
                 <FiCrosshair size={24} />
                 <span>Já respondidos</span>

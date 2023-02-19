@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react'
 import styles from './Quiz.module.scss'
 import Header from '@/components/Header';
 import Link from "next/link";
+import { useLocalStorage } from 'usehooks-ts'
 
 type QuizPageProps = {
   quizInfo: {
@@ -113,8 +114,19 @@ type QuizQuestion = {
   }
 }
 
+type AnshweredQuiz = {
+  data: {
+    quiz: number;
+    correctQuestions: number;
+    totalQuestions: number;
+    thumbnail: string;
+    description: string;
+    alternativeText: string;
+  }
+}
+
 export default function QuizPage({ quizInfo }: QuizPageProps) {
-  console.log(quizInfo)
+  const [quizAnswered, setQuizAnshwered] = useLocalStorage<AnshweredQuiz[]>('quizAnswered', []);
   const [status, setStatus] = useState('initial')
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [indexQuestion, setIndexQuestion] = useState(0)
@@ -156,9 +168,19 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
     } else {
       setCurrentQuestion(quizInfo.attributes.questions.data[indexQuestion].id)
     }
-    
   }, [indexQuestion])
 
+  useEffect(() => {
+    if (lastQuestionId === currentQuestion) {
+      setAnswhers([...answhers, { question: currentQuestion, anshwer: option }])
+    }
+  }, [answhers])
+
+  useEffect(() => {
+    if (status === 'finished') {
+      saveInteraction()
+    }
+  }, [status])
   const advanceQuestion = () => {
     if (option !== 0) {
 
@@ -167,12 +189,12 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
         setOption(0)
         setStatus('finished')
         setCurrentQuestion(999)
-        saveInteraction()
       } else {
         setAnswhers([...answhers, { question: currentQuestion, anshwer: option }])
         setOption(0)
         setIndexQuestion(indexQuestion + 1)
       }
+      console.log('respostas', answhers)
       document.getElementById('scroll')?.scroll(indexQuestion * 10, 0)
     }
   }
@@ -219,7 +241,7 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
         <Image
           className={`${styles.image} `}
           fill
-          style={{ objectFit: 'cover'}}
+          style={{ objectFit: 'cover' }}
           placeholder="blur"
           blurDataURL={question.attributes.cover.data.attributes.base64}
           alt={question.attributes.cover.data.attributes.alternativeText || 'Sem texto alternativo ):'}
@@ -258,7 +280,7 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
         <Image
           className={styles.image}
           fill
-          style={{ objectFit: 'cover'}}
+          style={{ objectFit: 'cover' }}
           placeholder="blur"
           blurDataURL={cover.data.attributes.base64}
           alt={cover.data.attributes.alternativeText}
@@ -282,18 +304,19 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
             </button>
           </div>
 
-          <Link href="/"  className={styles.link}>
-            <span style={{ fontSize: '1.6rem', fontFamily: 'Open sans'}}>Ir para página Inicial</span>
-            <FiHome size={24} style={{ marginLeft: '.8rem'}}/>
+          <Link href="/" className={styles.link}>
+            <span style={{ fontSize: '1.6rem', fontFamily: 'Open sans' }}>Ir para página Inicial</span>
+            <FiHome size={24} style={{ marginLeft: '.8rem' }} />
           </Link>
 
-          <ToastContainer autoClose={1500} className={styles.toastContainer} progressStyle={{ backgroundColor: '#49e673', color: '#49e673'}} />
+          <ToastContainer autoClose={1500} className={styles.toastContainer} progressStyle={{ backgroundColor: '#49e673', color: '#49e673' }} />
         </div>
       </>
     )
   }
   function getTotalCorrectQuestions() {
     let totalCorrectAnshwers = 0
+
     answhers.forEach(anshwer => {
       const question = questions.data.find(question => question.id === anshwer.question)
       if (question?.attributes.correctAnswer.data.id === anshwer.anshwer) {
@@ -325,9 +348,13 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(
-        { data: {quiz: quizInfo.id, correctQuestions: getTotalCorrectQuestions(), totalQuestions: questions.data.length }}
+        { data: { quiz: quizInfo.id, correctQuestions: getTotalCorrectQuestions(), totalQuestions: questions.data.length } }
       )
     })
+    const thumbnail = quizInfo.attributes.cover.data.attributes.url;
+    const alternativeText = quizInfo.attributes.cover.data.attributes.alternativeText;
+    const description = quizInfo.attributes.description;
+    setQuizAnshwered((prevValue) => [...prevValue, { data: { quiz: quizInfo.id, correctQuestions: getTotalCorrectQuestions(), totalQuestions: questions.data.length, description, thumbnail, alternativeText } }])
   }
   return (
     <>
@@ -345,18 +372,18 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
                 )
               })}
             </div>
-            <div style={{position: 'relative'}}>
-            <Image
-              className={styles.image}
-              fill
-              priority
-              style={{ objectFit: 'cover'}}
-              alt={quizInfo.attributes.cover.data.attributes.alternativeText}
-              src={quizInfo.attributes.cover.data.attributes.url}
-              sizes="(min-width: 60em) 24vw,
+            <div style={{ position: 'relative' }}>
+              <Image
+                className={styles.image}
+                fill
+                priority
+                style={{ objectFit: 'cover' }}
+                alt={quizInfo.attributes.cover.data.attributes.alternativeText}
+                src={quizInfo.attributes.cover.data.attributes.url}
+                sizes="(min-width: 60em) 24vw,
                     (min-width: 28em) 45vw,
                     100vw"
-            />
+              />
             </div>
             <h2>{quizInfo.attributes.description}</h2>
             <div className={styles.buttonBox}>
@@ -402,7 +429,7 @@ const getQuiz = async (quizId: string) => {
   return data.data
 }
 
-export const getStaticProps: GetStaticProps  = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params?.id;
 
   if (!id) {
@@ -422,7 +449,7 @@ export const getStaticProps: GetStaticProps  = async (context) => {
     }
   }))
 
-  const {base64}= await getPlaiceholder(quizInfo.attributes.cover.data.attributes.url)
+  const { base64 } = await getPlaiceholder(quizInfo.attributes.cover.data.attributes.url)
   quizInfo.attributes.cover.data.attributes.base64 = base64
 
   return {
@@ -435,7 +462,7 @@ export const getStaticProps: GetStaticProps  = async (context) => {
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
 
   return {
-      paths: [], //indicates that no page needs be created at build time
-      fallback: 'blocking' //indicates the type of fallback
+    paths: [], //indicates that no page needs be created at build time
+    fallback: 'blocking' //indicates the type of fallback
   }
 }

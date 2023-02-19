@@ -1,0 +1,51 @@
+.answeredBox {
+  padding: 8rem 1.6rem; //top = altura do header
+  margin-top: 1.6rem;
+}
+
+.image {
+  position: relative !important;
+  height: 150px !important;
+  border-radius: 5px;
+}
+
+.answeredBoxItem {
+  margin-top: 1.6rem;
+  background-color: var(--color-grey-light-1);
+  padding: 1.6rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+
+  & button {
+    align-self: flex-end;
+    padding: .8rem 1.6rem;
+    border: none;
+    cursor: pointer;
+    background-color: var(--color-primary);
+    color: var(--text-color-light);
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 1.6rem;
+  }
+
+  & button:hover {
+    background-color: var(--color-primary-dark);
+  }
+}
+
+
+.titleSecondary {
+  font-size: 1.6rem;
+}
+
+.descriptionBox {
+  font-size: 1.6rem;
+  margin: .8rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.amount {
+  color: var(--color-secondary-dark);
+  font-weight: bold;
+}

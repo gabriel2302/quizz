@@ -42,10 +42,6 @@ export default function Categories() {
         ))}
       </div>
       <div className={styles.quizListBox}>
-        {quizList.length === 0 && (
-          <span>Clique em um botão para buscar os quiz do tema</span>
-        )}
-
         {quizList.length > 0 && (
           <div className={styles.quizListBox}>
             <QuizList {...quizList} />
