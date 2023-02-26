@@ -10,3 +10,39 @@
   padding: 8rem 1.6rem;
   margin-top: 1.6rem;
 }
+
+.notFound {
+  padding: 8rem 1.6rem;
+  margin-top: 1.6rem;
+}
+
+.notFoundTitle {
+  font-family: 'Bubblegum Sans';
+  font-size: 3.2rem;
+  text-align: center;
+}
+
+.notFoundInfo {
+  font-size: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 1.6rem;
+}
+
+.notFoundRedirectLink  {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-top: 1.6rem;
+  align-items: flex-end;
+  color: var(--color-primary);
+}
+
+.notFoundRedirectLink:visited {
+  color: var(--color-primary-dark);
+}
+
+.notFoundRedirectLink svg {
+  margin-left: .8rem;
+}

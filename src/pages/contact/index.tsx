@@ -49,7 +49,6 @@ export default function Contact() {
         })
       } catch (err) {
         let validationErrors = {};
-        console.log(err)
         if (err instanceof Yup.ValidationError) {
           err.inner.forEach((error)=> {
             if (error.path) {

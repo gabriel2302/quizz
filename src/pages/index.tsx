@@ -8,15 +8,16 @@ import { PacmanLoader } from 'react-spinners';
 export type QuizzAttributes = {
   title: string;
   description: string;
-  littleKnowledge: string;
-  mediumKnowledge: string;
-  fullKnowledge: string;
+  littleKnowledge?: string;
+  mediumKnowledge?: string;
+  fullKnowledge?: string;
   cover: {
     data: {
       attributes: {
-        alternativeText: string;
+        alternativeText?: string;
         url: string
-      }
+      },
+      alternativeText?: string;
     }
   }
 }

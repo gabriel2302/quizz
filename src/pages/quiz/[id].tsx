@@ -424,6 +424,9 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
 
 const getQuiz = async (quizId: string) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/${quizId}?populate[0]=cover&populate[1]=questions&populate[2]=questions.cover&populate[3]=questions.answers&populate[4]=questions.correctAnswer&populate[5]=tags`)
+  if (response.status === 404) {
+    return null;
+  }
   const data = await response.json()
   return data.data
 }
@@ -438,7 +441,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 
   const quizInfo = await getQuiz(id[0])
-
+  if (!quizInfo) {
+    return {
+      redirect: {
+        destination: `/404?quiz=${id[0]}`,
+        permanent: true
+      }
+    }
+  }
   await Promise.all(quizInfo.attributes.questions.data.map(async (data: any, index: any) => {
     const { base64, img } = await getPlaiceholder(data.attributes.cover.data.attributes.url)
     data.attributes.cover.data.attributes.base64 = base64
