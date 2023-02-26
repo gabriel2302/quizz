@@ -2,11 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import {getPlaiceholder} from 'plaiceholder'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== 'POST') {
-    res.status(405).send({ message: 'Only POST requests allowed' })
-    return
-  }
-  const response = await Promise.all(req.body.map(async (data: any, index: any) => {
+  const responseInteractions = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/interactions/count`, { next: { revalidate: 60 * 60 } })
+  const highlight = await responseInteractions.json()
+  await Promise.all(highlight.map(async (data: any, index: any) => {
     const { base64, img } = await getPlaiceholder(data.url)
     data.base64 = base64
     return {
@@ -14,6 +12,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       base64: base64
     }
   }))
-  return res.status(200).send(response)
+  return res.status(200).send(highlight)
 
 }

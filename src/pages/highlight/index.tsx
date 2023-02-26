@@ -85,25 +85,11 @@ export default function Highlight() {
 }
 
 const getHighlight = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/interactions/count`, { next: { revalidate: 60 * 60 } })
-  const highlight = await response.json()
-
   const highlightList = await fetch('/api/getBase64', {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(highlight),
-    method: 'POST'
+    method: 'GET'
   })
-  const highlightListImage = await highlightList.json();
-
-  const highlistListWithImage = highlight.map((item: any)=> {
-    const base64 = highlightListImage.find((image: any)=> image.src === item.url)
-    return {
-      ...item,
-      base64: base64.base64
-    }
-  })
-
-  return highlistListWithImage;
+  return highlightList.json();
 }
