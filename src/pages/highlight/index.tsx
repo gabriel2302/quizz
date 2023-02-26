@@ -10,6 +10,7 @@ type Highlight = {
   title: string;
   url: string;
   alternative_text: string;
+  percentage: number;
 }
 
 export default function Highlight() {
@@ -25,12 +26,22 @@ export default function Highlight() {
     fetchData()
 
   }, []);
+
+  const choiceMeanColor = (percentage: number) => {
+    if (percentage >= 70) {
+      return 'green'
+    }
+    if (percentage >= 50) {
+      return 'yellow'
+    }
+    return 'red'
+  }
   return (
     <div className={styles.highlightBox}>
       <h1 className={styles.title}>Quiz em alta (Top 10)</h1>
 
       {highlight.map((item, index) => (
-        <div className={styles.highlightItem}>
+        <div key={item.quiz_id} className={styles.highlightItem}>
           <div className={styles.titleBox}>
             <h2 className={styles.highlightItemTitle}>
               {item.title}
@@ -43,8 +54,12 @@ export default function Highlight() {
             )}
             
           </div>
-          <span className={styles.highlightItemDescription}>Respondido {item.anshwered} {Number(item.anshwered) > 1 ? 'vezes' : 'vez'}</span>
-
+          <div className={styles.highlightItemDescription}>
+            <span>Respondido <span className={styles.amount}>{item.anshwered}</span> {Number(item.anshwered) > 1 ? 'vezes' : 'vez'}</span>
+            <span className={`${styles.mean}`}> - Média de acertos: 
+              <span className={`${styles[choiceMeanColor(item.percentage)]}`}> {item.percentage}%</span>
+            </span>
+          </div>
           <div style={{ position: 'relative' }}>
             <Image
               className={styles.image}

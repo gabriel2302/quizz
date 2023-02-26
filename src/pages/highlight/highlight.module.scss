@@ -67,3 +67,23 @@
   font-weight: bold;
   color: var(--color-primary-dark);
 }
+
+.green {
+  color: var(--color-secondary-dark);
+  font-weight: bold;
+}
+
+.yellow {
+  color: var(--color-tertiary);
+  font-weight: bold;
+}
+
+.red {
+  color: var(--color-red-error);
+  font-weight: bold;
+}
+
+.amount {
+  color: var(--color-primary-dark);
+  font-weight: bold;
+}
