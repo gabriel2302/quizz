@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import styles from './answered.module.scss';
+import Link from 'next/link';
+import { FiLink } from 'react-icons/fi';
 
 
 type AnshweredQuiz = {
@@ -50,7 +52,13 @@ export default function Anshwered() {
 
         <div className={styles.quizListBox}>
           {groupQuiz.length === 0 ? (
-            <div>Você ainda não respondeu nenhum quiz, responda algum aqui</div>
+            <div className={styles.description}>
+              <span>Você ainda não respondeu nenhum quiz, responda algum aqui
+                <Link href="/" aria-describedby='Link para a lista de quiz'>
+                 <FiLink size={24}/>
+                </Link>
+              </span>
+            </div>
           ) : (
             <div>
               {groupQuiz.map(quiz => (
@@ -79,7 +87,7 @@ export default function Anshwered() {
                     />
                   </div>
 
-                  <button type='button' role="link" onClick={() => push(`/quiz/${quiz.data.quiz}`)}>Refazer</button>
+                  <button type='button' className={styles.button} role="link" onClick={() => push(`/quiz/${quiz.data.quiz}`)}>Refazer</button>
                 </div>
               ))}
             </div>

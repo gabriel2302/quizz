@@ -18,12 +18,16 @@
   }
 }
 
+.inputBox {
+  width: 70%;
+}
 .searchInput {
   padding: .8rem;
   border: 5px;
   font-family: 'Open Sans';
   border-radius: 5px;
   color: var(--color-secondary);
+  width: 100%;
 
   &::placeholder {
     font-family: 'Open Sans';
@@ -44,4 +48,13 @@
 
 .selectedItem {
   background-color: var(--color-primary-dark);
+}
+
+.logoBox {
+  font-size: 2.4rem;
+  font-family: "Bubblegum Sans", "Open Sans";
+  color: var(--color-white);
+  width: 20%;
+  text-align: center;
+  margin-right: 2.4rem;
 }

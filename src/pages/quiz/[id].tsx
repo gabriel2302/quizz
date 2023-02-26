@@ -208,6 +208,7 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
   }
 
   const copyToClipBoard = () => {
+    console.log(router)
     if (typeof (navigator.clipboard) == 'undefined') {
       var text = document.createElement('textarea')
       text.value = `${process.env.NEXT_PUBLIC_APP_URL}${router.asPath}`

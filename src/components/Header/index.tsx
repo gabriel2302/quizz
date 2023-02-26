@@ -46,7 +46,7 @@ export default function Header() {
                 <span>Já respondidos</span>
               </li>
             </Link>
-            <Link href="/" onClick={() => navigateMenu("alta")}>
+            <Link href="/highlight" onClick={() => navigateMenu("alta")}>
               <li id="alta" className={`${isSelected === "alta" && styles.selectedItem}`}>
                 <FiStar size={24} />
                 <span>Quiz Em Alta</span>
@@ -61,7 +61,12 @@ export default function Header() {
           </ul>
         </BurguerMenu>
       </div>
-      <div>
+      <div className={styles.logoBox}>
+        <span>
+          Quizz
+        </span>
+      </div>
+      <div className={styles.inputBox}>
         <input placeholder="Pesquisar" className={styles.searchInput}></input>
       </div>
     </header>

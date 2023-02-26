@@ -49,3 +49,19 @@
   color: var(--color-secondary-dark);
   font-weight: bold;
 }
+
+.button {
+  margin-top: 0.8rem;
+}
+
+.description {
+  font-size: 1.6rem;
+  margin-top: .8rem;
+  & svg {
+    margin-left: .8rem;
+  }
+
+  & a:visited {
+    color: var(--color-primary-dark)
+  }
+}
