@@ -13,7 +13,7 @@ export default function QuizItem({attributes, id}: Quizz) {
           fill
           priority
           style={{ objectFit: 'cover'}}
-          alt={attributes.cover.data.attributes.alternativeText} 
+          alt={attributes.cover.data.attributes.alternativeText || 'Sem texto alternativo, sinto muito'} 
           src={attributes.cover.data.attributes.url}
         />
         <h2 className={styles.description}>{attributes.title}</h2>

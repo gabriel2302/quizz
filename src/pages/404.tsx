@@ -50,7 +50,7 @@ export default function NotFoundPage() {
 
       {typePage === 'search' && (
         <div className={styles.notFoundInfo}>
-          <span>Busca "{query[typePage]}" não encontrado(a)!</span>
+          <span>Busca &ldquo;{query[typePage]}&rdquo; não encontrado(a)!</span>
           <Link href="/" className={styles.notFoundRedirectLink}>
             <span>Voltar para página inicial</span>
             <FiHome size={24} />
