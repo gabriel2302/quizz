@@ -7,7 +7,7 @@ export default function Search() {
 
   return (
     <div className={style.searchBox}>
-      <h1>Termo buscado: "{searchTerm}"</h1>
+      <h1>Termo buscado: &ldquo;{searchTerm}&rdquo;</h1>
       <span>Resultados encontrados: {quizList.length}</span>
 
       <QuizList {...quizList} />
