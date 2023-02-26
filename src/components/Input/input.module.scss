@@ -1,0 +1,25 @@
+.input {
+  padding: 1.6rem .8rem;
+  border-color: var(--color-primary);
+  border-radius: 5px;
+  border-style: solid;
+}
+
+.label {
+  font-size: 1.6rem;
+  color: var(--color-primary-dark);
+}
+
+.input:focus, .input:focus-visible {
+  outline-color: var(--color-primary-dark);
+}
+
+.error {
+  font-size: 1.6rem;
+  color: var(--color-red-error);
+}
+
+.inputError {
+  outline-color: var(--color-red-error);
+  border-color: var(--color-red-error);;
+}

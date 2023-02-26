@@ -52,7 +52,7 @@ export default function Header() {
                 <span>Quiz Em Alta</span>
               </li>
             </Link>
-            <Link href="/" onClick={() => navigateMenu("contato")}>
+            <Link href="/contact" onClick={() => navigateMenu("contato")}>
               <li id="contato" className={`${isSelected === "contato" && styles.selectedItem}`}>
                 <FiPhoneForwarded size={24} />
                 <span>Contato</span>
