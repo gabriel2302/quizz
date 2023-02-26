@@ -194,7 +194,6 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
         setOption(0)
         setIndexQuestion(indexQuestion + 1)
       }
-      console.log('respostas', answhers)
       document.getElementById('scroll')?.scroll(indexQuestion * 10, 0)
     }
   }
@@ -208,7 +207,6 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
   }
 
   const copyToClipBoard = () => {
-    console.log(router)
     if (typeof (navigator.clipboard) == 'undefined') {
       var text = document.createElement('textarea')
       text.value = `${process.env.NEXT_PUBLIC_APP_URL}${router.asPath}`

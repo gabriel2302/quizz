@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { getPlaiceholder } from 'plaiceholder';
 import { useEffect, useState } from 'react';
 import { FiAward } from 'react-icons/fi';
 import styles from './highlight.module.scss'
@@ -11,6 +12,7 @@ type Highlight = {
   url: string;
   alternative_text: string;
   percentage: number;
+  base64: string;
 }
 
 export default function Highlight() {
@@ -21,7 +23,6 @@ export default function Highlight() {
     const fetchData = async () => {
       const highlightList = await getHighlight();
       setHighlight(highlightList);
-      console.log(highlightList)
     }
     fetchData()
 
@@ -65,6 +66,8 @@ export default function Highlight() {
               className={styles.image}
               fill
               priority
+              placeholder="blur"
+              blurDataURL={item.base64}
               style={{ objectFit: 'cover' }}
               alt={item.alternative_text}
               src={item.url}
@@ -84,5 +87,23 @@ export default function Highlight() {
 const getHighlight = async () => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/interactions/count`, { next: { revalidate: 60 * 60 } })
   const highlight = await response.json()
-  return highlight;
+
+  const highlightList = await fetch('/api/getBase64', {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(highlight),
+    method: 'POST'
+  })
+  const highlightListImage = await highlightList.json();
+
+  const highlistListWithImage = highlight.map((item: any)=> {
+    const base64 = highlightListImage.find((image: any)=> image.src === item.url)
+    return {
+      ...item,
+      base64: base64.base64
+    }
+  })
+
+  return highlistListWithImage;
 }

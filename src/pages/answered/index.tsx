@@ -43,7 +43,6 @@ export default function Anshwered() {
       return acc;
     }, [] as GroupAnshweredQuiz[]);
     setGroupQuiz(groupQuizReduce);
-    console.log(groupQuiz)
   }, [])
   return (
     <>

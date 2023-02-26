@@ -9,7 +9,6 @@ type ToastProps = {
 }
 export default function Toast({message, type}: ToastProps){
   const notify = () => toast(message);
-  console.log('entrou aqui')
   return (
     <div>
       <ToastContainer autoClose={4000} />

@@ -27,8 +27,6 @@ export default function Categories() {
     }
     fetchData()
   }, []);
-
-  console.log(quizList)
   return (
     <>
     <div className={styles.categories}>
