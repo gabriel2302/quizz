@@ -1,10 +1,11 @@
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import styles from './answered.module.scss';
 import Link from 'next/link';
 import { FiLink } from 'react-icons/fi';
+import Button from '@/components/Button';
 
 
 type AnshweredQuiz = {
@@ -54,7 +55,7 @@ export default function Anshwered() {
             <div className={styles.description}>
               <span>Você ainda não respondeu nenhum quiz, responda algum aqui
                 <Link href="/" aria-describedby='Link para a lista de quiz'>
-                 <FiLink size={24}/>
+                  <FiLink size={24} />
                 </Link>
               </span>
             </div>
@@ -66,7 +67,7 @@ export default function Anshwered() {
                   <div className={styles.descriptionBox}>
                     <span className={styles.description}>Feito <span className={styles.amount}>{quiz.amount}</span> {quiz.amount > 1 ? 'vezes' : 'vez'} </span>
                     <span className={styles.description}>
-                      Melhor resultado: 
+                      Melhor resultado:
                       <span className={styles.amount}>  {quiz.data.correctQuestions}  </span>
                       de
                       <span className={styles.amount}>  {quiz.data.totalQuestions}</span>
@@ -85,8 +86,9 @@ export default function Anshwered() {
                     100vw"
                     />
                   </div>
-
-                  <button type='button' className={styles.button} role="link" onClick={() => push(`/quiz/${quiz.data.quiz}`)}>Refazer</button>
+                  <div style={{marginTop: '0.8rem', alignSelf: 'flex-end'}}>
+                    <Button className={styles.button} role="link" onClick={() => push(`/quiz/${quiz.data.quiz}`)}>Refazer</Button>
+                  </div>
                 </div>
               ))}
             </div>

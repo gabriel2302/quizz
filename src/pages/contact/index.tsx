@@ -7,6 +7,7 @@ import styles from './contact.module.scss';
 import Input from '@/components/Input';
 import TextArea from '@/components/TextArea';
 import { toast, ToastContainer } from 'react-toastify';
+import Button from '@/components/Button';
 
 interface FormData {
   email: string;
@@ -80,7 +81,7 @@ export default function Contact() {
         <Input name="email" label="E-mail *" />
         <Input name="telephone" label="Telefone" type={"tel"} />
         <TextArea name="message" label="Mensagem *" rows={5} />
-        <button type='submit' className={styles.button}>Enviar Mensagem</button>
+        <Button type='submit' style={{padding: '2.4rem 0'}}>Enviar Mensagem</Button>
       </Form>
 
       <ToastContainer autoClose={1500} className={styles.toastContainer}  hideProgressBar />

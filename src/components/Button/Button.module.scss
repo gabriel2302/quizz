@@ -1,0 +1,28 @@
+.button {
+  padding: .8rem 1.6rem;
+  border: none;
+  cursor: pointer;
+  background-color: var(--color-primary);
+  color: var(--text-color-light);
+  font-weight: bold;
+  border-radius: 5px;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: var(--color-primary-dark);
+  }
+}
+
+.iconBox {
+  display: flex;
+  align-items: center;
+}
+
+
+.MLSm {
+  margin-left: .8rem;
+}

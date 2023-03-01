@@ -4,6 +4,7 @@ import { PacmanLoader } from 'react-spinners';
 import { CSSProperties, useEffect, useState } from 'react';
 import { FiAward } from 'react-icons/fi';
 import styles from './highlight.module.scss'
+import Button from '@/components/Button';
 
 type Highlight = {
   anshwered: string;
@@ -50,16 +51,16 @@ export default function Highlight() {
       <h1 className={styles.title}>Quiz em alta (Top 10)</h1>
       {isLoading ? (
         <div className="sweet-loading">
-        <PacmanLoader
-          color='#88aaee'
-          loading={isLoading}
-          cssOverride={override}
-          size={32}
-          aria-label="Carregando lista de Quiz"
-          data-testid="loader"
-        />
-      </div>
-      ): 
+          <PacmanLoader
+            color='#88aaee'
+            loading={isLoading}
+            cssOverride={override}
+            size={32}
+            aria-label="Carregando lista de Quiz"
+            data-testid="loader"
+          />
+        </div>
+      ) :
         highlight.map((item, index) => (
           <div key={item.quiz_id} className={styles.highlightItem}>
             <div className={styles.titleBox}>
@@ -68,15 +69,15 @@ export default function Highlight() {
               </h2>
               {index < 3 && (
                 <div className={styles.badge}>
-                <FiAward size={24} className={styles.badgeIcon}/>
-                <span className={styles.badgeCount}>{index + 1}</span>
-              </div>
+                  <FiAward size={24} className={styles.badgeIcon} />
+                  <span className={styles.badgeCount}>{index + 1}</span>
+                </div>
               )}
-              
+
             </div>
             <div className={styles.highlightItemDescription}>
               <span>Respondido <span className={styles.amount}>{item.anshwered}</span> {Number(item.anshwered) > 1 ? 'vezes' : 'vez'}</span>
-              <span className={`${styles.mean}`}> - Média de acertos: 
+              <span className={`${styles.mean}`}> - Média de acertos:
                 <span className={`${styles[choiceMeanColor(item.percentage)]}`}> {item.percentage}%</span>
               </span>
             </div>
@@ -95,8 +96,9 @@ export default function Highlight() {
                       100vw"
               />
             </div>
-  
-            <button type='button' className={styles.button} role="link" onClick={() => push(`/quiz/${item.quiz_id}`)}>Fazer quiz</button>
+            <div style={{width: 'max-content', marginTop: '0.8rem', alignSelf: 'flex-end'}}>
+              <Button type='button' role="link" onClick={() => push(`/quiz/${item.quiz_id}`)}>Fazer quiz</Button>
+            </div>
           </div>
         ))}
     </div>

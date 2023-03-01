@@ -20,6 +20,7 @@ import styles from './Quiz.module.scss'
 import Header from '@/components/Header';
 import Link from "next/link";
 import { useLocalStorage } from 'usehooks-ts'
+import Button from '@/components/Button';
 
 type QuizPageProps = {
   quizInfo: {
@@ -386,8 +387,8 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
             </div>
             <h2>{quizInfo.attributes.description}</h2>
             <div className={styles.buttonBox}>
-              <button type='button' className={styles.button} onClick={() => router.back()}>Voltar <FiArrowLeft size={24} /></button>
-              <button type='button' className={styles.button} onClick={InitializeQuiz}>Iniciar <FiPlay size={24} /></button>
+              <Button type='button' onClick={() => router.back()} icon="FiArrowLeft" >Voltar</Button>
+              <Button type='button' onClick={InitializeQuiz} icon="FiPlay">Iniciar</Button>
             </div>
           </div>
         ) : (

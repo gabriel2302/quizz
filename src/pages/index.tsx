@@ -4,7 +4,6 @@ import { CSSProperties, useEffect, useState } from 'react'
 import QuizList from '../components/Quiz/QuizList'
 import { PacmanLoader } from 'react-spinners';
 
-
 export type QuizzAttributes = {
   title: string;
   description: string;
