@@ -28,14 +28,10 @@
   }
 
   .image {
-    height: 100% !important;
+    height: 90% !important;
   }
 }
 
 @media only screen and (min-width: 900px)  {
-  .image {
-    height: max-content !important;
-    max-height: 20rem;
-  }
 }
 
