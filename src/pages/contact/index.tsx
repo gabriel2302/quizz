@@ -75,7 +75,8 @@ export default function Contact() {
     await postData()
   }
   return (
-    <div className={styles.contactBox}>
+    <div className={`${styles.contactBox} main-content`}>
+      <h1 className={styles.title}>Enviar mensagem</h1>
       <Form ref={formRef} onSubmit={handleSubmit} className={styles.formBox}>
         <Input name="name" label="Nome *" />
         <Input name="email" label="E-mail *" />

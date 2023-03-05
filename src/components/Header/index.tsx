@@ -17,6 +17,7 @@ import { Form } from '@unform/web';
 import { FormHandles, SubmitHandler } from '@unform/core';
 
 import {useSearchContext} from '../../hooks/contexts/searchContext';
+import { useMenuContext } from '@/hooks/contexts/menuContext';
 
 interface FormData {
   search: string;
@@ -24,7 +25,7 @@ interface FormData {
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isSelected, setIsSelected] = useState("inicio");
+  const {selectedMenu, setSelectedMenu} = useMenuContext();
   const formRef = useRef<FormHandles>(null);
   const { push } = useRouter();
   const {setQuizList, setSearchTerm} = useSearchContext();
@@ -59,6 +60,7 @@ export default function Header() {
           setQuizList(quizList.data)
           push('/search')
         }
+        setSelectedMenu('inicio')
       } catch (err) {
         let validationErrors = {};
         if (err instanceof Yup.ValidationError) {
@@ -79,43 +81,43 @@ export default function Header() {
 
   function navigateMenu(item: string) {
     setIsOpen(false)
-    setIsSelected(item);
+    setSelectedMenu(item)
   }
 
   return (
     <header className={styles.header}>
-      <div>
+      <div className={styles.burguerBox}>
         <button type='button' className={styles.burguerIcon} onClick={() => setIsOpen(!isOpen)}>
           <FiMenu size={32} />
         </button>
         <BurguerMenu isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <ul className={styles.burguerMenu} id="menuList">
             <Link href="/" onClick={() => navigateMenu("inicio")}>
-              <li id="inicio" className={`${isSelected === "inicio" && styles.selectedItem}`}>
+              <li id="inicio" className={`${selectedMenu === "inicio" && styles.selectedItem}`}>
                 <FiHome size={24} />
                 <span>Inicio</span>
               </li>
             </Link>
             <Link href="/categories" onClick={() => navigateMenu("categorias")}>
-              <li id="categorias" className={`${isSelected === "categorias" && styles.selectedItem}`}>
+              <li id="categorias" className={`${selectedMenu === "categorias" && styles.selectedItem}`}>
                 <FiGrid size={24} />
                 <span>Categorias</span>
               </li>
             </Link>
             <Link href="/answered" onClick={() => navigateMenu("respondidos")}>
-              <li id="respondidos" className={`${isSelected === "respondidos" && styles.selectedItem}`}>
+              <li id="respondidos" className={`${selectedMenu === "respondidos" && styles.selectedItem}`}>
                 <FiCrosshair size={24} />
                 <span>Já respondidos</span>
               </li>
             </Link>
             <Link href="/highlight" onClick={() => navigateMenu("alta")}>
-              <li id="alta" className={`${isSelected === "alta" && styles.selectedItem}`}>
+              <li id="alta" className={`${selectedMenu === "alta" && styles.selectedItem}`}>
                 <FiStar size={24} />
                 <span>Quiz Em Alta</span>
               </li>
             </Link>
             <Link href="/contact" onClick={() => navigateMenu("contato")}>
-              <li id="contato" className={`${isSelected === "contato" && styles.selectedItem}`}>
+              <li id="contato" className={`${selectedMenu === "contato" && styles.selectedItem}`}>
                 <FiPhoneForwarded size={24} />
                 <span>Contato</span>
               </li>
@@ -124,9 +126,9 @@ export default function Header() {
         </BurguerMenu>
       </div>
       <div className={styles.logoBox}>
-        <span>
+        <Link href='/'>
           Quizz
-        </span>
+        </Link>
       </div>
       <Form className={styles.inputBox} ref={formRef} onSubmit={handleSubmit}>
         <Input name='search' placeholder="Pesquisar" type="search" className={styles.searchInput} />

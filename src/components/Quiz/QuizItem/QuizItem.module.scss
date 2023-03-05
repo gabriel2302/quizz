@@ -16,3 +16,26 @@
   font-size: 1.6rem;
   font-family: 'Open Sans';
 }
+
+.quizBox {
+  position: relative;
+  height: 32rem;
+}
+
+@media only screen and (min-width: 600px)  {
+  .quizItem {
+    height: 30rem;
+  }
+
+  .image {
+    height: 100% !important;
+  }
+}
+
+@media only screen and (min-width: 900px)  {
+  .image {
+    height: max-content !important;
+    max-height: 20rem;
+  }
+}
+

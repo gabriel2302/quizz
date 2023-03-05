@@ -6,8 +6,8 @@ export default function Search() {
   const {quizList, searchTerm} = useSearchContext();
 
   return (
-    <div className={style.searchBox}>
-      <h1>Termo buscado: &ldquo;{searchTerm}&rdquo;</h1>
+    <div className={`${style.searchBox} main-content`}>
+      <h1 className={style.title}>Termo buscado: &ldquo;{searchTerm}&rdquo;</h1>
       <span>Resultados encontrados: {quizList.length}</span>
 
       <QuizList {...quizList} />

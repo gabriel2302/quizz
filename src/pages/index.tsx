@@ -48,7 +48,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={styles.main} style={{position: 'relative'}}>
+    <main className={`${styles.main} main-content`} style={{position: 'relative'}}>
       {!isLoading ? (
         data && (<div className={styles.quizListBox}><QuizList {...data} /></div>)
       ) : (

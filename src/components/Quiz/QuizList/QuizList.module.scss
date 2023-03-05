@@ -8,4 +8,13 @@
 
 .title {
   font-size: 2.0rem;
+  grid-column: 1/-1;
+}
+
+@media only screen and (min-width: 900px)  {
+  .quizList {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 1.6rem;
+  }
 }

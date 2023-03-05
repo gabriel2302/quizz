@@ -1,6 +1,10 @@
 .highlightBox {
-  padding: 8rem 1.6rem; //top = altura do header
+  padding: 8rem 1.6rem; 
+}
+
+.title {
   margin-top: 1.6rem;
+  grid: 0;
 }
 
 .image {
@@ -8,10 +12,6 @@
   height: 150px !important;
   border-radius: 5px;
   margin-top: .8rem;
-}
-
-.title {
-  margin-bottom: 1.6rem;
 }
 
 .highlightItem {
@@ -86,4 +86,20 @@
 .amount {
   color: var(--color-primary-dark);
   font-weight: bold;
+}
+
+@media only screen and (min-width: 900px)  {
+  .highlightBox {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1.6rem;
+  }
+
+  .title {
+    grid-column: 1/-1;
+  }
+  .image {
+    height: max-content !important;
+    max-height: 32rem;
+  }
 }

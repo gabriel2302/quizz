@@ -47,7 +47,7 @@ export default function Highlight() {
     return 'red'
   }
   return (
-    <div className={styles.highlightBox}>
+    <div className={`${styles.highlightBox} main-content`}>
       <h1 className={styles.title}>Quiz em alta (Top 10)</h1>
       {isLoading ? (
         <div className="sweet-loading">

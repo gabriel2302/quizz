@@ -28,7 +28,7 @@ export default function NotFoundPage() {
   }, [query])
 
   return (
-    <div className={styles.notFound}>
+    <div className={`${styles.notFound} main-content`}>
       <h1 className={styles.notFoundTitle}>404 - Conteúdo não encontrado</h1>
       {typePage === 'quiz' && (
         <div className={styles.notFoundInfo}>

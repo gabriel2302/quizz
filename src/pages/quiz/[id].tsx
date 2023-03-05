@@ -237,7 +237,7 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
 
   function Quizz(question: QuizQuestion, active: boolean) {
     return (
-      <div key={question.id} className={active ? styles.activeQuestion : styles.disableQuestion}>
+      <div key={question.id} className={`${active ? styles.activeQuestion : styles.disableQuestion} ${styles.quizBox}`}>
         <Image
           className={`${styles.image} `}
           fill
@@ -257,10 +257,9 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
             <label htmlFor="anshwer">{answher.attributes.description}</label>
           </div>
         ))}
-
-        <button style={{ margin: 0 }} className={`${styles.button} ${styles.buttonOnlyIcon} ${styles.right}`} type="button" onClick={advanceQuestion}>
-          <FiArrowRight size={24} color="#FFF" />
-        </button>
+        <div className={styles.right}>
+          <Button style={{ margin: 0 }} icon="FiArrowRight" type="button" onClick={advanceQuestion}></Button>
+        </div>
       </div>
     )
   }
@@ -293,15 +292,13 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
           </span>
 
           <div className={`${styles.buttonBox} ${styles.auxMXSm}`}>
-            <button type="button" className={styles.button} onClick={remakeQuiz}>
+            <Button type="button" icon="FiRotateCcw" onClick={remakeQuiz}>
               Refazer
-              <FiRotateCcw size={24} />
-            </button>
+            </Button>
 
-            <button type="button" className={styles.button} onClick={copyToClipBoard}>
+            <Button type="button" icon="FiShare2" onClick={copyToClipBoard}>
               Compartilhar
-              <FiShare2 size={24} />
-            </button>
+            </Button>
           </div>
 
           <Link href="/" className={styles.link}>
@@ -359,7 +356,7 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
   return (
     <>
       <Header />
-      <div className={styles.quiz} id="quiz">
+      <div className={`main-content`} id="quiz">
 
         <h1 className={styles.title}>{quizInfo.attributes.title}</h1>
 
@@ -372,7 +369,7 @@ export default function QuizPage({ quizInfo }: QuizPageProps) {
                 )
               })}
             </div>
-            <div style={{ position: 'relative' }}>
+            <div className={styles.quizBox}>
               <Image
                 className={styles.image}
                 fill

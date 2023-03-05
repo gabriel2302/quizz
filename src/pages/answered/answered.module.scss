@@ -1,7 +1,16 @@
 .answeredBox {
-  padding: 8rem 1.6rem; //top = altura do header
+  padding: 8rem 1.6rem;
+}
+
+.title {
   margin-top: 1.6rem;
 }
+
+.image {
+  height: max-content !important;
+  max-height: 20rem;
+}
+
 
 .image {
   position: relative !important;
@@ -63,5 +72,27 @@
 
   & a:visited {
     color: var(--color-primary-dark)
+  }
+}
+
+@media only screen and (min-width: 600px)  {
+  .image {
+    height: 90% !important;
+  }
+}
+
+@media only screen and (min-width: 900px)  {
+  .answeredBox {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 1.6rem;
+  }
+
+  .title {
+    grid-column: 1/-1;
+  }
+  .image {
+    height: max-content !important;
+    max-height: 20rem;
   }
 }

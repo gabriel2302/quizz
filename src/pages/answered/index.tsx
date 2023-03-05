@@ -47,7 +47,7 @@ export default function Anshwered() {
   }, [])
   return (
     <>
-      <div className={styles.answeredBox}>
+      <div className={`${styles.answeredBox} main-content`}>
         <h1 className={styles.title}>Quiz já respondidos</h1>
 
         <div className={styles.quizListBox}>

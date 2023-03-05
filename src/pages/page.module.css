@@ -6,20 +6,16 @@
   height: 100vh;
 }
 
-.quizListBox {
-  padding: 8rem 1.6rem;
-  margin-top: 1.6rem;
-}
 
 .notFound {
   padding: 8rem 1.6rem;
-  margin-top: 1.6rem;
 }
 
 .notFoundTitle {
   font-family: 'Bubblegum Sans';
   font-size: 3.2rem;
   text-align: center;
+  margin-top: 1.6rem;
 }
 
 .notFoundInfo {

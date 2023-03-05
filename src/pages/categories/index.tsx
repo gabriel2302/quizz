@@ -29,7 +29,7 @@ export default function Categories() {
   }, []);
   return (
     <>
-    <div className={styles.categories}>
+    <div className={`${styles.categories} main-content`}>
       <h1 className={styles.title}>Lista de categorias</h1>
       <span className={styles.description}>Clique em uma categoria para listar os quiz</span>
       <div className={styles.tagBox}>

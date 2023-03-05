@@ -10,9 +10,6 @@
   width: 100%;
   z-index: 2;
 
-  margin-bottom: 3.2rem;
-
-
   & a {
     text-decoration: none;
   }
@@ -21,6 +18,7 @@
 .inputBox {
   width: 70%;
 }
+
 .searchInput {
   padding: .8rem;
   border: 5px;
@@ -46,6 +44,12 @@
   color: var(--text-color-light)
 }
 
+@media only screen and (min-width: 900px) {
+  .burguerBox {
+    display: none;
+  }
+}
+
 .selectedItem {
   background-color: var(--color-primary-dark);
 }
@@ -57,4 +61,27 @@
   width: 20%;
   text-align: center;
   margin-right: 2.4rem;
+
+  & a {
+    color: var(--color-white);
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .logoBox {
+    text-align: left;
+  }
+
+  .searchInput {
+    max-width: 32rem;
+  }
+
+  .inputBox {
+    justify-self: flex-end;
+    width: 32rem;
+  }
+
+  .header {
+    justify-content: space-between;
+  }
 }
